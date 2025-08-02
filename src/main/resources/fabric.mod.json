@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "sheared",
+  "version": "${version}",
+  "name": "Sheared",
+  "description": "Shear your sheep in more ways than one!",
+  "authors": [
+    "PepperCode1",
+    "devOS: Sanity Edition"
+  ],
+  "contact": {
+    "homepage": "https://devos.one/",
+    "sources": "https://github.com/devOS-Sanity-Edition/Sheared"
+  },
+  "license": "MIT",
+  "icon": "assets/sheared/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "one.devos.nautical.sheared.ShearedClient"
+    ]
+  },
+  "mixins": [
+    "sheared.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": "*",
+    "minecraft": "${minecraft_dependency}"
+  }
+}

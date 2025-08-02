@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "one.devos.nautical.sheared.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "LivingEntityMixin",
+    "LivingEntityRendererMixin",
+    "SheepMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
