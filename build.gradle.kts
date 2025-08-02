@@ -17,11 +17,9 @@ group = "one.devos.nautical"
 
 val buildNum = providers.environmentVariable("GITHUB_RUN_NUMBER")
     .filter(String::isNotEmpty)
-	.map { "build.$it" }
-    .orElse("local")
-    .get()
+    .orNull
 
-version = "1.0.0+mc$minecraftVersion.$buildNum"
+version = "1.0.0+$minecraftVersion" + if (buildNum != null) { ".build.$buildNum" } else { "" }
 
 repositories {
 	maven("https://maven.parchmentmc.org")
