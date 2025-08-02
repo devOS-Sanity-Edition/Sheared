@@ -47,7 +47,7 @@ abstract class LivingEntityRendererMixin {
 		float shearDirX = Mth.cos(shearDirAngle);
 		float shearDirZ = Mth.sin(shearDirAngle);
 		float shearAmount = RANDOM.nextFloat(0.25f, 1.0f);
-		shearAmount *= Mth.rotLerp(partialTick, shearProgressO, shearProgress);
+		shearAmount *= Mth.lerp(partialTick, shearProgressO, shearProgress);
 
 		Matrix4f matrix = new Matrix4f();
 		matrix.m10(shearDirX * shearAmount);
