@@ -6,7 +6,9 @@
   "client": [
     "LivingEntityMixin",
     "LivingEntityRendererMixin",
-    "SheepMixin"
+    "SheepMixin",
+    "SheepRendererMixin",
+    "SheepRenderStateMixin"
   ],
   "injectors": {
     "defaultRequire": 1

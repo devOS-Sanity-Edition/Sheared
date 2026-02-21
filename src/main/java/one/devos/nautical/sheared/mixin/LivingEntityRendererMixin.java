@@ -1,6 +1,7 @@
 package one.devos.nautical.sheared.mixin;
 
 import java.util.Random;
+import java.util.UUID;
 
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,10 +13,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
+import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.animal.Sheep;
-import one.devos.nautical.sheared.mixinterface.SheepExtension;
+import one.devos.nautical.sheared.mixinterface.SheepRenderStateExtension;
 
 @Mixin(LivingEntityRenderer.class)
 abstract class LivingEntityRendererMixin {
@@ -23,23 +23,27 @@ abstract class LivingEntityRendererMixin {
 	private static final Random RANDOM = new Random();
 
 	@Inject(method = "setupRotations", at = @At("RETURN"))
-	private void onReturnSetupRotations(LivingEntity entity, PoseStack poseStack, float bob, float yBodyRot, float partialTick, float scale, CallbackInfo ci) {
-		if (!(entity instanceof Sheep sheep)) {
+	private void onReturnSetupRotations(LivingEntityRenderState renderState, PoseStack poseStack, float bodyRot, float scale, CallbackInfo ci) {
+		if (!(renderState instanceof SheepRenderStateExtension sheepRenderStateExt)) {
 			return;
 		}
 
-		long seed = entity.getUUID().getMostSignificantBits() ^ entity.getUUID().getLeastSignificantBits();
+		UUID uuid = sheepRenderStateExt.sheared$getUuid();
+
+		if (uuid == null) {
+			return;
+		}
+
+		long seed = uuid.getMostSignificantBits() ^ uuid.getLeastSignificantBits();
 		RANDOM.setSeed(seed);
 
 		if (RANDOM.nextInt(5) != 0) {
 			return;
 		}
 
-		SheepExtension extension = ((SheepExtension) sheep);
-		float shearProgress = extension.sheared$getShearProgress();
-		float shearProgressO = extension.sheared$getShearProgressO();
+		float shearProgress = sheepRenderStateExt.sheared$getShearProgress();
 
-		if (shearProgress <= Mth.EPSILON && shearProgressO <= Mth.EPSILON) {
+		if (shearProgress <= Mth.EPSILON) {
 			return;
 		}
 
@@ -47,7 +51,7 @@ abstract class LivingEntityRendererMixin {
 		float shearDirX = Mth.cos(shearDirAngle);
 		float shearDirZ = Mth.sin(shearDirAngle);
 		float shearAmount = RANDOM.nextFloat(0.25f, 1.0f);
-		shearAmount *= Mth.lerp(partialTick, shearProgressO, shearProgress);
+		shearAmount *= shearProgress;
 
 		Matrix4f matrix = new Matrix4f();
 		matrix.m10(shearDirX * shearAmount);

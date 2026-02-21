@@ -3,7 +3,7 @@ package one.devos.nautical.sheared.mixin;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 
-import net.minecraft.world.entity.animal.Sheep;
+import net.minecraft.world.entity.animal.sheep.Sheep;
 import one.devos.nautical.sheared.mixinterface.SheepExtension;
 
 @Mixin(Sheep.class)
